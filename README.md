@@ -31,6 +31,14 @@ INSTALL
     
 3. [Optionally] rename the `proxy.php` script to 'index.php' if you wish to proxy with the index implied...
     
-4. Edit the `config.php` script - adjust the target domain list to reflect the only domains you would like to proxy for!
-    
+4. All domains are allowed by default. If you want to block specific domains, adjust the `$SETTING_BLOCKED_HOSTS` array in `config.php`.
+
+Example of `$SETTING_BLOCKED_HOSTS` array:
+
+```php
+$SETTING_BLOCKED_HOSTS = array(
+    'example.com', 'blocked.com'
+);
+```
+
 Done!
