@@ -5,9 +5,6 @@
  * e.g. the host on which the J2EE APIs we'll be proxying are running
  * */
 @require_once('config.php');
-$ALLOWED_HOSTS = array();
-if(isset($SETTING_ALLOWED_HOSTS))
-    $ALLOWED_HOSTS = $SETTING_ALLOWED_HOSTS; # Override with setting from config.php
 
 $BLOCKED_HOSTS = array();
 if(isset($SETTING_BLOCKED_HOSTS))
@@ -24,7 +21,7 @@ if(isset($SETTING_BLOCKED_HOSTS))
  * Enables or disables filtering for cross domain requests.
  * Recommended value: true
  */
-define( 'CSAJAX_FILTERS', true );
+define( 'CSAJAX_FILTERS', false );
 
 /**
  * If set to true, $valid_requests should hold only domains i.e. a.example.com, b.example.com, usethisdomain.com
@@ -44,7 +41,7 @@ define( 'CSAJAX_DEBUG', true );
 /*$valid_requests = array(
 	'localhost'
 );*/
-$valid_requests = $ALLOWED_HOSTS;
+$valid_requests = array();
 
 /* * * STOP EDITING HERE UNLESS YOU KNOW WHAT YOU ARE DOING * * */
 
@@ -112,27 +109,6 @@ if ( is_array( $request_params ) && array_key_exists('csurl', $request_params ) 
 if ( preg_match( '!' . $_SERVER['SCRIPT_NAME'] . '!', $request_url ) || empty( $request_url ) || count( $p_request_url ) == 1 ) {
 	csajax_debug_message( 'Invalid request - make sure that csurl variable is not empty' );
 	exit;
-}
-
-// check against valid requests
-if ( CSAJAX_FILTERS ) {
-	$parsed = $p_request_url;
-	if ( CSAJAX_FILTER_DOMAIN ) {
-		if ( !in_array( $parsed['host'], $valid_requests ) ) {
-			csajax_debug_message( 'Invalid domain - ' . $parsed['host'] . ' is not included in valid request domains' );
-			exit;
-		}
-	} else {
-		$check_url = isset( $parsed['scheme'] ) ? $parsed['scheme'] . '://' : '';
-		$check_url .= isset( $parsed['user'] ) ? $parsed['user'] . ($parsed['pass'] ? ':' . $parsed['pass'] : '') . '@' : '';
-		$check_url .= isset( $parsed['host'] ) ? $parsed['host'] : '';
-		$check_url .= isset( $parsed['port'] ) ? ':' . $parsed['port'] : '';
-		$check_url .= isset( $parsed['path'] ) ? $parsed['path'] : '';
-		if ( !in_array( $check_url, $valid_requests ) ) {
-			csajax_debug_message( 'Invalid domain - ' . $request_url . ' is not included in valid request domain' );
-			exit;
-		}
-	}
 }
 
 // check against blocked requests
