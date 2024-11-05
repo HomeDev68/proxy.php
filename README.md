@@ -33,4 +33,14 @@ INSTALL
     
 4. Edit the `config.php` script - adjust the target domain list to reflect the only domains you would like to proxy for!
     
+5. [Optionally] adjust the `$SETTING_BLOCKED_HOSTS` array in `config.php` to specify the domains you want to block.
+
+Example of `$SETTING_BLOCKED_HOSTS` array:
+
+```php
+$SETTING_BLOCKED_HOSTS = array(
+    'example.com', 'blocked.com'
+);
+```
+
 Done!

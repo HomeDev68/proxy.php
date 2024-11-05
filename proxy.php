@@ -9,6 +9,10 @@ $ALLOWED_HOSTS = array();
 if(isset($SETTING_ALLOWED_HOSTS))
     $ALLOWED_HOSTS = $SETTING_ALLOWED_HOSTS; # Override with setting from config.php
 
+$BLOCKED_HOSTS = array();
+if(isset($SETTING_BLOCKED_HOSTS))
+    $BLOCKED_HOSTS = $SETTING_BLOCKED_HOSTS; # Override with setting from config.php
+
 /**
  * AJAX Cross Domain (PHP) Proxy 0.8
  *    by Iacovos Constantinou (http://www.iacons.net)
@@ -129,6 +133,12 @@ if ( CSAJAX_FILTERS ) {
 			exit;
 		}
 	}
+}
+
+// check against blocked requests
+if ( in_array( $parsed['host'], $BLOCKED_HOSTS ) ) {
+	csajax_debug_message( 'Blocked domain - ' . $parsed['host'] . ' is included in blocked request domains' );
+	exit;
 }
 
 // append query string for GET requests
