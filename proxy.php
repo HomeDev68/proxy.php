@@ -99,6 +99,11 @@ if ( isset( $_REQUEST['csurl'] ) ) {
     exit;
 }
 
+// Add http:// if the URL does not start with http:// or https://
+if (!preg_match('/^https?:\/\//', $request_url)) {
+    $request_url = 'https://' . $request_url;
+}
+
 $p_request_url = parse_url( $request_url );
 
 // csurl may exist in GET request methods
